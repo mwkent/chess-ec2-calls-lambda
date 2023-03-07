@@ -7,7 +7,7 @@ FUNCTION_NAME = 'chess-habits-level1'
 logger = logging.getLogger(__name__)
 
 
-def invoke_function(fen: str):
+def invoke_function(fen: str) -> str:
     """
     Invokes a Lambda function.
 
@@ -27,4 +27,5 @@ def invoke_function(fen: str):
     except ClientError:
         logger.exception("Couldn't invoke function %s.", FUNCTION_NAME)
         raise
-    return response
+    return response['Payload'].read().decode()
+
