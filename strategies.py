@@ -3,6 +3,9 @@ Some example strategies for people who want to create a custom, homemade bot.
 """
 
 from __future__ import annotations
+
+import logging
+
 import chess
 from chess.engine import PlayResult
 import random
@@ -10,6 +13,8 @@ from engine_wrapper import MinimalEngine
 from typing import Any
 
 from src import main
+
+logger = logging.getLogger(__name__)
 
 
 class ExampleEngine(MinimalEngine):
@@ -40,6 +45,8 @@ class FirstMove(ExampleEngine):
 
 class Habits1(ExampleEngine):
     """Calls an AWS lambda to get the recommended move"""
-    def search(self, board, *args):
-        move = main.invoke_function(board.fen())
+    def search(self, board: chess.Board, *args: Any) -> PlayResult:
+        move_str = main.invoke_function(board.fen())
+        logger.info(f"Move returned from lambda function: {move_str}")
+        move = chess.Move.from_uci(move_str)
         return PlayResult(move, None)
