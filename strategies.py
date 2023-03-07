@@ -9,6 +9,8 @@ import random
 from engine_wrapper import MinimalEngine
 from typing import Any
 
+from src import main
+
 
 class ExampleEngine(MinimalEngine):
     pass
@@ -34,3 +36,10 @@ class FirstMove(ExampleEngine):
         moves = list(board.legal_moves)
         moves.sort(key=str)
         return PlayResult(moves[0], None)
+
+
+class Habits1(ExampleEngine):
+    """Calls an AWS lambda to get the recommended move"""
+    def search(self, board, *args):
+        move = main.invoke_function(board.fen())
+        return PlayResult(move, None)
