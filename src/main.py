@@ -27,5 +27,5 @@ def invoke_function(fen: str) -> str:
     except ClientError:
         logger.exception("Couldn't invoke function %s.", FUNCTION_NAME)
         raise
-    return response['Payload'].read().decode()
+    return response['Payload']
 
