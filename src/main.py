@@ -23,9 +23,8 @@ def invoke_function(fen: str) -> str:
             FunctionName=FUNCTION_NAME,
             Payload=json.dumps({'fen': fen}),
             LogType='Tail')
-        logger.info("Invoked function %s.", FUNCTION_NAME)
+        logger.info(f"Invoked function: {FUNCTION_NAME}")
     except ClientError:
-        logger.exception("Couldn't invoke function %s.", FUNCTION_NAME)
+        logger.exception(f"Couldn't invoke function: {FUNCTION_NAME}")
         raise
-    return response['Payload']
-
+    return json.loads(response['Payload'].read().decode())
